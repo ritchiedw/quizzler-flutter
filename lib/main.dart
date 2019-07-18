@@ -30,6 +30,32 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  void checkAnswer(bool userPickedAnswer) {
+    setState(() {
+      bool correctAnswer = quizBrain.getQuestionAnswer();
+      if (correctAnswer == userPickedAnswer) {
+        print("USer got it right");
+        scoreKeeper.add(
+           Icon(
+             Icons.check,
+             color: Colors.green,
+           ),
+        );
+      } else {
+        print("user got it wrong");
+        scoreKeeper.add(
+          Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+
+      quizBrain.nextQuestion();
+    });
+
+  }
+
 //  List<String> questions = [
 //    'You can lead a cow down stairs but not up stairs.',
 //    'Approximately one quarter of human bones are in the feet.',
@@ -45,14 +71,6 @@ class _QuizPageState extends State<QuizPage> {
 //  Question q1 = Question(q: 'You can lead a cow down stairs but not up stairs.', a: false);
 
   int questionNumber = 0;
-
-  void updateQuestionNumber() {
-    setState(() {
-      //questionNumber = questionNumber + 1;
-      //questionNumber++;
-      quizBrain.nextQuestion();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +110,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == true) {
-                  print("USer got it right");
-                } else {
-                  print("user got it wrong");
-                }
-                updateQuestionNumber();
+                checkAnswer(true);
 //                scoreKeeper.add(
 //                  Icon(
 //                    Icons.check,
@@ -123,14 +135,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == false) {
-                  print("USer got it right");
-                } else {
-                  print("user got it wrong");
-                }
-
-                updateQuestionNumber();
+                checkAnswer(false);
 //                scoreKeeper.add(
 //                  Icon(
 //                    Icons.close,
